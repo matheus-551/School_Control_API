@@ -52,6 +52,16 @@ public class TeacherController {
 		List<Teacher> teachers = this.teacherService.listAllTeachers();
 		return ResponseEntity.ok(teachers);
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Teacher> findByTeacher(@PathVariable("id") Integer id) {
+		Optional<Teacher> teacher = this.teacherService.findTeacherById(id);
+		
+		if(teacher.isPresent()) {
+			return ResponseEntity.ok().body(teacher.get());
+		} else 
+			return new ResponseEntity("Ocorreu um erro ao buscar o professor", HttpStatus.BAD_REQUEST);
+	}
 
 	@PostMapping
 	public ResponseEntity<Teacher> createTeacher(@RequestBody TeacherDTO teacherDto) {

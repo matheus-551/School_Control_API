@@ -1,8 +1,8 @@
 package com.school_control_P1.controller;
 
 import java.util.List;
+import java.util.Optional;
 
-import com.school_control_P1.exception.BusinessRuleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.school_control_P1.exception.BusinessRuleException;
 import com.school_control_P1.model.Classroom;
 import com.school_control_P1.service.ClassroomService;
 
@@ -28,6 +29,16 @@ public class ClassroomController {
 	public ResponseEntity<List<Classroom>> listAll() {
 		List<Classroom> classrooms = this.classroomService.listAllClassrooms();
 		return ResponseEntity.ok(classrooms);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Classroom> findByClassroom(@PathVariable("id") Integer id) {
+		Optional<Classroom> classroom = this.classroomService.findClassroomById(id);
+		
+		if (classroom.isPresent()) {
+			return new ResponseEntity<Classroom>(classroom.get(), HttpStatus.OK);
+		} else 
+			return new ResponseEntity("Ocorreu um erro ao buscar a sala", HttpStatus.BAD_REQUEST);
 	}
 	
 	@PostMapping

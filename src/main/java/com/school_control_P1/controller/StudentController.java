@@ -46,6 +46,16 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> findByStudent(@PathVariable("id") Integer id) {
+    	Optional<Student> student = this.studentService.findStudentById(id);
+    	
+    	if(student.isPresent()) {
+    		return ResponseEntity.ok().body(student.get());
+    	} else 
+    		return new ResponseEntity("Ocorreu um erro ao buscar o aluno", HttpStatus.BAD_REQUEST);
+    }
+    
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody StudentDTO studentDto) {
         try {
